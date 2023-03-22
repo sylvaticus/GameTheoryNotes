@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Nash equilibrium · GameTheoryNotes</title><script async src="https://www.googletagmanager.com/gtag/js?id=G-Q39LHCRBB6"></script><script>  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Q39LHCRBB6', {'page_path': location.pathname + location.search + location.hash});
+</script><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script><link href="assets/custom.css" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="index.html">GameTheoryNotes</a></span></div><form class="docs-search" action="search.html"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="index.html">Index</a></li><li><span class="tocitem">Notes</span><ul><li><a class="tocitem" href="01_Basic_concepts.html">Basic concepts</a></li><li class="is-active"><a class="tocitem" href="02_Nash_equilibrium.html">Nash equilibrium</a><ul class="internal"><li><a class="tocitem" href="#Finding-the-Nash-equilibrium"><span>Finding the Nash equilibrium</span></a></li></ul></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Notes</a></li><li class="is-active"><a href="02_Nash_equilibrium.html">Nash equilibrium</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href="02_Nash_equilibrium.html">Nash equilibrium</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/sylvaticus/GameTheoryNotes/blob/main/srcPages/02_Nash_equilibrium.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="nash_equilibrium"><a class="docs-heading-anchor" href="#nash_equilibrium">Best-response strategy and Nash equilibrium</a><a id="nash_equilibrium-1"></a><a class="docs-heading-anchor-permalink" href="#nash_equilibrium" title="Permalink"></a></h1><p>In this chapter we define the concept of <em>best response</em> and <em>Nash equilibrium</em> and describe some methods to obtain the Nash equilibria of a given game.</p><pre><code class="language-julia hljs"># Let Julia activate a specific environment for this course instead of using the global one
+using Pkg 
+cd(@__DIR__)
+Pkg.activate(&quot;.&quot;)
+using LinearAlgebra, StrategicGames</code></pre><p>Given a game in normal form and the (assumed) strategies of all players other than <span>$n$</span>, indicated as <span>$s_{-n}$</span>, the best-response strategy for player <span>$n$</span> is: <span>$s^*_n$</span> such that <span>$E[U(s^*_{n},s_{-n})] \ge E[U(s_{n},s_{-n})]  ~~ \forall ~~ s_{n} \in S_n $, that is the (possible mixed) strategy that results in the highest expected utility for player $n$</span> within all the strategies available to him. A strategy is a <strong>strictly best response</strong> when it is unique within <span>$S_n$</span>, i.e. its expected utility, conditional to <span>$s_{-n}$</span>, is strictly larger tha any other <span>$s_{ni}$</span>. </p><p><strong>Nash equilibrium</strong> The Nash equilibrium is simply the strategy profile(s) formed by only best-response strategies by all players. If all these are strict best responses, we have a <strong>strict Nash</strong> equilibrium, otherwise we have a <strong>weak Nash</strong> equilibrium.</p><ul><li>under the Nash equilibrium each player maximise its expected utility conditional to the other players&#39; action</li><li>nobody that playes the Nash equilibrium has incentive to deviate from it</li><li>if we have a strict Nash equilibrium, this is unique, otherwise may not (the other best response may not form a Nash equilibrium)</li><li>if we allow players only for pure strategies a game may have none, one or multiple Nash equilibrium, but if we allow for mixed-strategies a game with finite number of players and actions will always have at least one Nash equilibrium</li><li>if we allow players only for pure strategies a game may have strict or weak Nash equilibrium(a), but if we allow for mixed-strategies a game with always have weak Nash equilibrium(a)</li></ul><h2 id="Finding-the-Nash-equilibrium"><a class="docs-heading-anchor" href="#Finding-the-Nash-equilibrium">Finding the Nash equilibrium</a><a id="Finding-the-Nash-equilibrium-1"></a><a class="docs-heading-anchor-permalink" href="#Finding-the-Nash-equilibrium" title="Permalink"></a></h2><p>We now convey the topic on how to find the Nash equilibrium. We already saw cases like the prisoner-dilemma where all players have a dominating strategy that doesn&#39;t depend from the other players&#39; actions. This is the &quot;easy&quot; case, as the &quot;confess&quot; is the best-respons strategy for both and hence <em>(confess,confess)</em> is indeed a Nash equilibrium. </p><h3 id="players-game"><a class="docs-heading-anchor" href="#players-game">2-players game</a><a id="players-game-1"></a><a class="docs-heading-anchor-permalink" href="#players-game" title="Permalink"></a></h3><p>Sometimes, when the game is small, we can look at the playoff matrix and directly apply the definition of Nash equilibrium to chechk if candidate strategies are Nash equilibrium.</p><h4 id="Examples:"><a class="docs-heading-anchor" href="#Examples:">Examples:</a><a id="Examples:-1"></a><a class="docs-heading-anchor-permalink" href="#Examples:" title="Permalink"></a></h4><p>2-players common-payoff game: </p><table><tr><th style="text-align: right">p1 \ p2</th><th style="text-align: right">A</th><th style="text-align: right">B</th></tr><tr><td style="text-align: right">A</td><td style="text-align: right">4,4</td><td style="text-align: right">0,0</td></tr><tr><td style="text-align: right">B</td><td style="text-align: right">0,0</td><td style="text-align: right">6,6</td></tr></table><p>It is easy to see that in this game both <span>$(A,A)$</span> than <span>$(B,B)$</span> represent a (weak) Nash equilibrium: given the other strategy, playing the same strategy is in both cases the (reciprocal) best response. Let&#39;s try some mixed-strategies.</p><p>Is it <span>$s_1 = s_2 = [0.5,0.5]$</span> a Nash equilibrium?</p><pre><code class="language-julia hljs">U      = [(4,4) (0,0); (0,0) (6,6)]
+# This transform a n-players dimensional payoff tensor of tuples (like `U` in this case)
+# to a n-players+1 dimensional tensor of scalars (where the additional dimension is relative to the various players)
+payoff = expand_dimensions(U) 
+s      = [[0.5,0.5],[0.5,0.5]]
+
+expected_payoff(payoff,s)                     # (2.5,2.5)
+expected_payoff(payoff,[[0.5,0.5],[0.6,0.4]]) # (2.4,2.4)
+expected_payoff(payoff,[[0.5,0.5],[0.4,0.6]]) # (2.6, 2.6)
+expected_payoff(payoff,[[1,0],[1,0]])         # (4, 4)   
+expected_payoff(payoff,[[1,0],[0.8,0.2]])     # (3.2, 3.2)  
+expected_payoff(payoff,[[0.8,0.2],[1,0]])     # (3.2, 3.2)
+expected_payoff(payoff,[[0,1],[0,1]])         # (6, 6)   
+expected_payoff(payoff,[[0,1],[0.2,0.8]])     # (4.8, 4.8)  
+expected_payoff(payoff,[[0.2,0.8],[0,1]])     # (4.8, 4.8)</code></pre><p>From the results above we notice that <code>(0.5,0.5)</code> for both players is NOT a Nash equilibrium, as each player has better respons strategies, while the two pure strategies <code>(1,0)</code> and <code>(0,1)</code> are.</p><p>Let&#39;t now take another example, the zero-sum game <em>Head or Tail</em>, where the first player wins if the 2 draws of the coin are the same, and player 2 win otherwise. It has the following payoff matrix:</p><table><tr><th style="text-align: right">p1 \ p2</th><th style="text-align: right">H</th><th style="text-align: right">T</th></tr><tr><td style="text-align: right">H</td><td style="text-align: right">1,-1</td><td style="text-align: right">-1,1</td></tr><tr><td style="text-align: right">T</td><td style="text-align: right">-1,1</td><td style="text-align: right">1,-1</td></tr></table><p>We can see that this game, contrary to the one before, doesn&#39;t have a pure strategy Nash equilibrium: if p1 plays H, p2 should plays T, at which point p1 should change its strategy to T, at which point p2 should change its strategy to H, and so on. Let&#39;s see if instead <code>(0.5,0.5)</code> is a mixed-strategy Nash equilibrium.</p><pre><code class="language-julia hljs">U = [(1,-1) (-1,1); (-1,1) (1, -1)]
+payoff = expand_dimensions(U)
+
+# Player 2 improves payoff by deviating from same-action strategy:
+expected_payoff(payoff,[[1,0],[1,0]])         # (1, -1)   
+expected_payoff(payoff,[[1,0],[0.8,0.2]])     # (0.6, -0.6)  
+expected_payoff(payoff,[[0,1],[0,1]])         # (1, -1)     
+expected_payoff(payoff,[[0,1],[0.2,0.8]])     # (0.6, -0.6)
+
+# Player 1 improves payoff by deviating from opposite-action strategy:
+expected_payoff(payoff,[[1,0],[0,1]])         # (-1, 1)   
+expected_payoff(payoff,[[0.8,0.2],[0,1]])     # (-0.6, 0.6)   
+expected_payoff(payoff,[[0,1],[1,0]])         # (-1, 1)   
+expected_payoff(payoff,[[0.2,0.8],[1,0]])     # (-0.6, 0.6)   
+
+# Strategy profiles where one of strategy is (0.5,0.5) are (weak) Nash eq as nobody can improve its expectation changing its response strategy:
+expected_payoff(payoff,[[0.5,0.5],[0.5,0.5]]) # (0, 0)
+expected_payoff(payoff,[[0.5,0.5],[0.3,0.7]]) # (0, 0)
+expected_payoff(payoff,[[0.5,0.5],[0.7,0.3]]) # (0, 0)
+expected_payoff(payoff,[[0.3,0.7],[0.5,0.5]]) # (0, 0)
+expected_payoff(payoff,[[0.7,0.3],[0.5,0.5]]) # (0, 0)
+
+# Other mixed strategies doesn&#39;t seem to lead to an equilibrium:
+expected_payoff(payoff,[[0.7,0.3],[0.7,0.3]]) # (0.16, -0.16)
+expected_payoff(payoff,[[0.7,0.3],[0.6,0.4]]) # (0.08, -0.08)</code></pre><h4 id="Finding-mixed-strategies-Nash-equilibriums-in-2-2-games"><a class="docs-heading-anchor" href="#Finding-mixed-strategies-Nash-equilibriums-in-2-2-games">Finding mixed strategies Nash equilibriums in 2 × 2 games</a><a id="Finding-mixed-strategies-Nash-equilibriums-in-2-2-games-1"></a><a class="docs-heading-anchor-permalink" href="#Finding-mixed-strategies-Nash-equilibriums-in-2-2-games" title="Permalink"></a></h4><p>Let&#39;s now take a more comprehensive approach to find Nash equilibrium in playing <code>2 × 2</code> games, i.e. 2 players each with 2 possible actions.</p><p>The trick to find the equilibrium is to consider that each player must have a strategy that make the other one indifferent in terms of his actions, that is that conditional to the first player strategy, the expected utility of player 2 with respect to its own actions must be the same. Otherwise he would not play &quot;at random&quot;.</p><p>Let&#39;s consider the following general payoff and strategies for a <code>2 × 2</code> game with mixed strategies:</p><table><tr><th style="text-align: right">p1 \ p2</th><th style="text-align: right">A</th><th style="text-align: right">B</th></tr><tr><td style="text-align: right">A</td><td style="text-align: right"><code>(u1aa,u2aa)</code></td><td style="text-align: right"><code>(u1ab,u2ab)</code></td></tr><tr><td style="text-align: right">B</td><td style="text-align: right"><code>(u1ba,u2ba)</code></td><td style="text-align: right"><code>(u1bb,u2bb)</code></td></tr></table><p><code>s1 = [p1a,1-p1a]</code> <code>s2 = [p2a,1-p2a]</code></p><p><strong>Finding p1a</strong>:</p><p>Player 1 must find a strategy (i.e. <code>p1a</code>) such that:</p><p><code>E[U]₂(payoff,s1,[1,0]) = E[U]₂(payoff,s1,[0,1])</code></p><p><code>u2aa * p1a + u2ba * (1-p1a) = u2ab * p1a + u2bb * (1-p1a)</code></p><p>From which we find that: <code>p1a = (u2bb-u2ba)/(u2aa-u2ba-u2ab+u2bb)</code></p><p><strong>Finding p2a</strong>:</p><p>Similarly player 2 must find a strategy (i.e. <code>p2a</code>) such that:</p><p><code>E[U]₁(payoff,[1,0],s2) = E[U]₁(payoff,[0,1],s2)</code></p><p><code>u1aa * p2a + u1ab * (1-p2a) = u1ba * p2a + u1bb * (1-p2a)</code></p><p>From which we find that: <code>p2a = (u1bb-u1ab)/(u1aa-u1ab-u1ba+u1bb)</code></p><p>Note that the computation of the equilibrium strategy for each player involves the <em>other</em> player utility only.</p><h4 id="Examples"><a class="docs-heading-anchor" href="#Examples">Examples</a><a id="Examples-1"></a><a class="docs-heading-anchor-permalink" href="#Examples" title="Permalink"></a></h4><pre><code class="language-julia hljs">function nash_2by2(payoff::Array{T,3}) where {T}
+    size(payoff) == (2,2,2) || error(&quot;This function works only with 2 × 2 games&quot;)
+    p1a = (payoff[2,2,2] - payoff[2,1,2]) / (payoff[1,1,2]-payoff[2,1,2] - payoff[1,2,2] + payoff[2,2,2])
+    p2a = (payoff[2,2,1] - payoff[1,2,1]) / (payoff[1,1,1]-payoff[1,2,1] - payoff[2,1,1] + payoff[2,2,1])
+    return [[p1a,1-p1a],[p2a,1-p2a]]
+end
+
+# Head or tail
+U = [(1,-1) (-1,1); (-1,1) (1, -1)]
+eq = nash_2by2(expand_dimensions(U)) # [[0.5, 0.5],[0.5,0.5]]
+
+# A biased penalty kick game (kicker - the row player - is more efficient on B)
+U = [(-1,1) (1,-1); (1,-1) (0, 0)]
+eq = nash_2by2(expand_dimensions(U)) # [[0.33, 0.66],[0.33,0.66]]
+
+# Battle of the sex
+U = [(2,1) (0,0); (0,0) (1,2)]
+eq = nash_2by2(expand_dimensions(U))  # [[0.66,0.33],[0.33,0.66]]</code></pre><h3 id="Multiple-players-game"><a class="docs-heading-anchor" href="#Multiple-players-game">Multiple players game</a><a id="Multiple-players-game-1"></a><a class="docs-heading-anchor-permalink" href="#Multiple-players-game" title="Permalink"></a></h3><p>Going beyond 2x2 games risks to become quickly intractable.</p><p>There are indeed no known algorithm that can <em>compute</em> Nash Equilibrium in polynomial time with the size of the problem (action space), even more to answer questions like if there is a unique equilibrium, if there is a pareto efficient equilibrium, if an equilibrium whose expected payoff for player <em>n</em> is at least <em>x</em>....  Neverthless, <em>verify</em> if a given solution (an action profile) is a Nash Equilibrium, is relativelly computationally cheap, and some newest algorithms try to exploit this property.</p><p>Here we present two very different approaches. </p><h4 id="The-Linear-Complementarity-formulation"><a class="docs-heading-anchor" href="#The-Linear-Complementarity-formulation">The Linear Complementarity formulation</a><a id="The-Linear-Complementarity-formulation-1"></a><a class="docs-heading-anchor-permalink" href="#The-Linear-Complementarity-formulation" title="Permalink"></a></h4><p>The fist one is a Linear Complementarity formulation (LCP), that originally used a dedicated &quot;solving&quot; algorithm from Lemke-Howson (1964). It&#39;s a mathematical programming problem that we can today solve with other methods (in <code>StrategicGames</code> we use the interior point method). Altougth it has a worst case exponential time with the size of the problem, it remains relativelly fasr in practice. The specific equilibrium that is retrieved depends from the initial conditions.</p><p>The LCP method finds the equilibrium conditions by exploiting a lot what a &quot;game&quot; is and the characteristics that a (Nash) equilibrium must have. In algeabric terms for a two-players game the problem corresponds to the following linear problem (notes: it seems more quadratic than linear actually due to the complementarity conditions):</p><p>(eq. 1) <span>$~~\sum_{k \in A_2} u_1(a_1^j, a_2^k) * s_2^k + r_1^j = U_1^* ~~~~ \forall j \in A_1$</span></p><p>(eq. 2) <span>$~~\sum_{j \in A_1} u_2(a_1^j, a_2^k) * s_1^j + r_2^k = U_2^* ~~~~ \forall k \in A_2$</span> </p><p>(eq. 3) <span>$~~\sum_{j \in A_1} s_1^j = 1, ~~ \sum_{k \in A_2} s_2^k = 1$</span></p><p>(eq. 4) <span>$~~s_1^j \geq 0, ~ s_2^k \geq 0 ~~~~~~~~~~~~~~~~~~ \forall j \in A_1, \forall k \in A_2$</span></p><p>(eq. 5) <span>$~~r_1^j \geq 0, ~ r_2^k \geq 0 ~~~~~~~~~~~~~~~~~~ \forall j \in A_1, \forall k \in A_2$</span></p><p>(eq. 6) <span>$~~r_1^j * s_1^j =0, r_2^k * s_2^k =0 ~~~~~ \forall j \in A_1, \forall k \in A_2$</span></p><p>Where <span>$u_1$</span> and <span>$u_2$</span> are the <span>$j \times k$</span> payoff matrices for the two players (a parameter here), while <span>$s_1, s_2$</span> (the strategies for the two players), <span>$U_1^*, U_2^*$</span> (the equilibrium expected utility for any action in the support of the two players) and <span>$r_1, r_2$</span> are the decision variables of the problem (what we want to find).   </p><p>Equations 1 and 2 states that, for each of the two players, the expected utility for any possible action, given the strategies of the other player, must be constant, eventually less of a <span>$r$</span> term, specific for that action and player. The complementary conditions (eq. 6) guarantee that either this <span>$r$</span> term is zero, or that action has zero probability of being selected by the given player (i.e. it is not in its strategy support). Eq. 3 and 4 simply guarantee that <span>$s$</span> are PMF (probability mass functions, i.e. discrete distributions, that is non-negative values that sum to 1).</p><p>We can formulate the problem in Julia as follow:</p><pre><code class="language-julia hljs">using JuMP, Ipopt # The first package is the algeabric language library, the second one is the interior point based solver engine
+
+function nash_lcp2players(payoff,init=[fill(1/size(payoff,1), size(payoff,1)),fill(1/size(payoff,2), size(payoff,2))])    
+    nActions = size(payoff)[1:end-1]
+    nPlayers = size(payoff)[end]
+    (length(nActions) == nPlayers) || error(&quot;Mismatch dimension or size between the payoff tensor and the number of players&quot;)
+    ndims(payoff) == 3 || error(&quot;This function works with only two players.&quot;)
+    m = Model(Ipopt.Optimizer)
+    set_optimizer_attribute(m, &quot;print_level&quot;, 0)
+    @variables m begin
+        r1[j in 1:nActions[1] ] &gt;= 0
+        r2[j in 1:nActions[2] ] &gt;= 0
+        u[n in 1:nPlayers]
+    end
+    @variable(m, 0-eps() &lt;= s1[j in 1:nActions[1] ] &lt;= 1,  start=init[1][j])
+    @variable(m, 0-eps() &lt;= s2[j in 1:nActions[2] ] &lt;= 1,  start=init[2][j])
+    @constraints m begin
+        slack1[j in 1:nActions[1]], # either rⱼ or sⱼ must be zero
+            r1[j] * s1[j] == 0
+        slack2[j in 1:nActions[2]], # either rⱼ or sⱼ must be zero
+            r2[j] * s2[j] == 0
+        utility1[j1 in 1:nActions[1] ], # the expected utility for each action must be constant, for each nPlayers
+        sum( payoff[j1,j2,1] * s2[j2] for j2 in 1:nActions[2] ) + r1[j1]  == u[1]
+        utility2[j2 in 1:nActions[2] ], # the expected utility for each action must be constant, for each nPlayers
+        sum( payoff[j1,j2,2] * s1[j1] for j1 in 1:nActions[1] ) + r2[j2]  == u[2]
+        probabilities1,
+            sum(s1[j] for j in 1:nActions[1]) == 1
+        probabilities2,
+            sum(s2[j] for j in 1:nActions[2]) == 1
+    end;
+    @objective m Max u[1] + u[2]
+    optimize!(m)
+    #print(m) # if we want to print the model
+    status = termination_status(m)
+    optStrategies = Vector{Vector{Float64}}()
+    optU          = Float64[]
+    if (status == MOI.OPTIMAL || status == MOI.LOCALLY_SOLVED || status == MOI.TIME_LIMIT) &amp;&amp; has_values(m)
+        optStrategies1 = value.(s1)
+        optStrategies2 = value.(s2)
+        optStrategies = [optStrategies1,optStrategies2]
+        optU = value.(u)
+    end
+    return (status=status,equilibrium_strategies=optStrategies,expected_payoffs=optU)
+end</code></pre><p>We can try it with the same problems we &quot;solved&quot; analytically before:</p><pre><code class="language-julia hljs"># Head or tail
+U = [(1,-1) (-1,1); (-1,1) (1, -1)]
+eq = nash_lcp2players(expand_dimensions(U))
+eq_strategies = eq.equilibrium_strategies # [[0.5, 0.5],[0.5,0.5]]
+
+# A biased penalty kick game (kicker - the row player - is more efficient on B)
+U = [(-1,1) (1,-1); (1,-1) (0, 0)]
+eq = nash_lcp2players(expand_dimensions(U))
+eq_strategies = eq.equilibrium_strategies # [[0.33, 0.66],[0.33,0.66]]
+
+# Battle of the sex
+U = [(2,1) (0,0); (0,0) (1,2)]
+eq = nash_lcp2players(expand_dimensions(U)) 
+eq_strategies = eq.equilibrium_strategies # [[0.66,0.33],[0.33,0.66]]
+
+# A 2-players game with 2 and 3 actions respectively
+U = [(1,-1) (-1,1) (1,0); (-1,1) (1, -1) (0,1)]
+eq = nash_lcp2players(expand_dimensions(U)) 
+eq_strategies = eq.equilibrium_strategies # [[0.66, 0.33],[0, 0.33, 0.66]]</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>If you run the code above you will get, due to the computational approximations, sligh different results, e.g. <code>1.7494232335004063e-20</code> instead of <code>0</code> in the last example</p></div></div><p>The <code>StrategicGames</code> package provides the <code>nash_lcp(payoff;init)</code> function, a generalisation of the algorithm above to <code>n</code> players, where each player can have a different actions space.</p><p>For example:</p><pre><code class="language-julia hljs"># This example is taken from https://www.youtube.com/watch?v=bKrwQKUT0v8 where it is analytically solved
+U = [(0,0,0) ; (3,3,3) ;; (3,3,3) ; (2,2,4) ;;;
+     (3,3,3) ; (2,4,2) ;; (4,2,2) ; (1,1,1) ;;;]
+eq = nash_lcp(expand_dimensions(U))
+eq_strategies = eq.equilibrium_strategies
+p = -1 + sqrt(10)/2 # approximatively 0.5811
+eq_strategies ≈ [[p,1-p],[p,1-p],[p,1-p]] # true</code></pre><h4 id="The-Support-Enumeration-Method"><a class="docs-heading-anchor" href="#The-Support-Enumeration-Method">The Support Enumeration Method</a><a id="The-Support-Enumeration-Method-1"></a><a class="docs-heading-anchor-permalink" href="#The-Support-Enumeration-Method" title="Permalink"></a></h4><hr/><div id="pd_rating_holder_8962705"></div>
+<script type="text/javascript">
+const pageURL = window.location.href;
+PDRTJS_settings_8962705 = {
+"id" : "8962705",
+"unique_id" : "/home/runner/work/GameTheoryNotes/GameTheoryNotes/srcPages/02_Nash_equilibrium.md",
+"title" : "02_Nash_equilibrium.md",
+"permalink" : pageURL
+};
+</script><div class="addthis_inline_share_toolbox"></div><hr/><script src="https://utteranc.es/client.js"
+        repo="sylvaticus/GameTheoryNotes"
+        issue-term="title"
+        label="💬 website_comment"
+        theme="github-dark"
+        crossorigin="anonymous"
+        async>
+</script><script type="text/javascript" charset="utf-8" src="https://polldaddy.com/js/rating/rating.js"></script><!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-6256c971c4f745bc"></script></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="01_Basic_concepts.html">« Basic concepts</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Wednesday 22 March 2023 14:47">Wednesday 22 March 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
