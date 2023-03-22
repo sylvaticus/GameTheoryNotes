@@ -215,11 +215,11 @@ makedocs(sitename="GameTheoryNotes",
 
 
 # Copying back the unmodified source
-**cp(PAGES_ROOTDIR_TMP, PAGES_ROOTDIR; force=true)
+cp(PAGES_ROOTDIR_TMP, PAGES_ROOTDIR; force=true)
 
 println("Starting deploying the documentation...")
 deploydocs(
-    repo = "github.com/sylvaticus/SPMLJ.git",
+    repo = "github.com/sylvaticus/GameTheoryNotes.git",
     devbranch = "main",
-    target = "buildedDoc"
+    target = "buildedPages"
 )
