@@ -181,8 +181,8 @@ Here we present two very different approaches.
 
 #### The Linear Complementarity formulation
 
-The fist one is a Linear Complementarity formulation (LCP), that originally used a dedicated "solving" algorithm from Lemke-Howson (1964).
-It's a mathematical programming problem that we can today solve with other methods (in `StrategicGames` we use the interior point method). Altougth it has a worst case exponential time with the size of the problem, it remains relativelly fasr in practice. The specific equilibrium that is retrieved depends from the initial conditions.
+The fist one is a Linear Complementarity formulation (LCP), a mathematical programming problem that were origninally solved by Lemke-Howson (1964) using a pivoting procedure.
+This mathematical problem can today be solved with other methods (the solver emploied by `StrategicGames` uses the interior point method). Altougth the algorithm has a worst case exponential time with the size of the problem, it remains relativelly fast in practice. The specific equilibrium that is retrieved depends from the initial conditions.
 
 The LCP method finds the equilibrium conditions by exploiting a lot what a "game" is and the characteristics that a (Nash) equilibrium must have. In algeabric terms for a two-players game the problem corresponds to the following linear problem (notes: it seems more quadratic than linear actually due to the complementarity conditions):
 
@@ -198,7 +198,7 @@ The LCP method finds the equilibrium conditions by exploiting a lot what a "game
 
 (eq. 6) $~~r_1^j * s_1^j =0, r_2^k * s_2^k =0 ~~~~~ \forall j \in A_1, \forall k \in A_2$
 
-Where $u_1$ and $u_2$ are the $j \times k$ payoff matrices for the two players (a parameter here), while $s_1, s_2$ (the strategies for the two players), $U_1^*, U_2^*$ (the equilibrium expected utility for any action in the support of the two players) and $r_1, r_2$ are the decision variables of the problem (what we want to find).   
+Where $u_1$ and $u_2$ are the $j \times k$ payoff matrices for the two players (a parameter here), while $s_1, s_2$ (the strategies for the two players), $U_1^*, U_2^*$ (the equilibrium expected utility for any action in the support of the two players) and $r_1, r_2$ (the so-called "slack" variables) are the decision variables of the problem (what we want to find).   
 
 Equations 1 and 2 states that, for each of the two players, the expected utility for any possible action, given the strategies of the other player, must be constant, eventually less of a $r$ term, specific for that action and player.
 The complementary conditions (eq. 6) guarantee that either this $r$ term is zero, or that action has zero probability of being selected by the given player (i.e. it is not in its strategy support).
@@ -295,3 +295,28 @@ eq_strategies ≈ [[p,1-p],[p,1-p],[p,1-p]] # true
 ```
 
 #### The Support Enumeration Method
+
+The support enumeration method works by replacing the complementarity equation of the LCP formulation by working on subproblems that are linear (at least in two players game) given a certain assumed support of the solution profile at the equilibrium, i.e. the sets of actions $\sigma_1 \subset A_1$ and $\sigma_2 \subset A_2$ that at equilibrium have positive non zero probabilities of being played:
+
+(eq. 1) $~~~~\sum_{k \in \sigma_2} u_1(a_1^j, a_2^k) * s_2^k  = U_1^* ~~~~ \forall j \in \sigma_1$
+
+(eq. 1.2) $~~\sum_{k \in \sigma_2} u_1(a_1^j, a_2^k) * s_2^k  \leq U_1^* ~~~~ \forall j \notin \sigma_1$
+
+(eq. 2) $~~~~\sum_{j \in \sigma_1} u_2(a_1^j, a_2^k) * s_1^j = U_2^* ~~~~ \forall k \in \sigma_2$ 
+
+(eq. 2.2) $~~\sum_{j \in \sigma_1} u_2(a_1^j, a_2^k) * s_1^j \leq U_2^* ~~~~ \forall k \notin \sigma_2$ 
+
+(eq. 3) $~~~~\sum_{j \in A_1} s_1^j = 1, ~~ \sum_{k \in A_2} s_2^k = 1$
+
+(eq. 4) $~~~~s_1^j \geq 0, ~ s_2^k \geq 0 ~~~~~~~~~~~~~~~~~~ \forall j \in \sigma_1, \forall k \in \sigma_2$
+
+(eq. 4.2) $~~s_1^j = 0, ~ s_2^k = 0 ~~~~~~~~~~~~~~~~~~ \forall j \notin \sigma_1, \forall k \notin \sigma_2$
+
+Where the equations have the same meaning as in the LCP formulation.
+
+Of course, the problem is now to find which is the correct support of the equilibrium.
+
+The Portland & oth. (2004) algorithm exploits a smart heuristic to search through all the possible support sets.
+It starts by trying small, similar in size supports, to gradually test larger ones and employing a trick named "conditional domination" to exclude certain possible supports from the search.
+
+
