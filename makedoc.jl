@@ -110,6 +110,7 @@ function preprocess(rootDir)
         outContent = ""
         filename = splitdir(file)[2]
         outContent *= origContent
+        outContent = replace(outContent, "```julia" => "```@example gtnotes")
         if (filename != "01_index.md")
             commentCode = """
                 ```@raw html
@@ -200,11 +201,11 @@ makedocs(sitename="GameTheoryNotes",
         ],
          format = Documenter.HTML(
              prettyurls = false,
-             analytics = "G-Q39LHCRBB6",
+             analytics = "G-CNCXWWMQ38",
              assets = ["assets/custom.css"],
              ),
          #strict = true,
-         #doctest = false
+         doctest = true,
          source  = "srcPages", # Attention here !!!!!!!!!!!
          build   = "buildedPages",
          #preprocess = preprocess

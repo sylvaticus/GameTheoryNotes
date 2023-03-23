@@ -14,3 +14,7 @@ _Disclaimer: The following notes are a mesh of my own notes, selected transcript
 
 - [Basic concepts](@ref basic_concepts): Overview and definitions
 - [Best-response strategy and Nash equilibrium](@ref nash_equilibrium): The concepts of best-response strategy and Nash equilibrium and how to retrieve it
+
+**Cite as**
+
+Antonello Lobianco (2023), _Game Theory notes with implementations in the Julia programming language_, [https://doi.org/10.5281/zenodo.7760509](https://doi.org/10.5281/zenodo.7760509)   

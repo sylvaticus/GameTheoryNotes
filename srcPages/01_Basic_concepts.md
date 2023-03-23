@@ -2,13 +2,15 @@
 
 In this unit we will introduce the main terminology, the concepts of Mixed strategies and equilibrium, in particular the Nash equilibrium.
 
+As we will use Julia to explain the concepts, let's first set up some stuff, like working on a environment specific for these notes instead of using a global environment. We'll do this at the beginning of each chapter. If you need help in setting up or using Julia you can refer to my tutorial [here](https://syl1.gitbook.io/julia-language-a-concise-tutorial/).
+
 ```julia
-# Let Julia activate a specific environment for this course instead of using the global one
 using Pkg 
+using Test # hide
 cd(@__DIR__)
 Pkg.activate(".")
 # And let's install the companion package "StrategicGames" from https://github.com/sylvaticus/StrategicGames.jl
-Pkg.add(url="https://github.com/sylvaticus/StrategicGames.jl")
+Pkg.add("StrategicGames")
 using LinearAlgebra, StrategicGames
 ```
 

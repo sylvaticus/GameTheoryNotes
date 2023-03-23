@@ -3,7 +3,7 @@
 
 cff-version: 1.2.0
 title: >-
-  Game Theory Notes
+  Game Theory notes with implementations in the Julia programming language
 message: Please cite this course using these metadata.
 type: software
 authors:
@@ -16,5 +16,5 @@ authors:
     orcid: 'https://orcid.org/0000-0002-1534-8697'
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.6425030
+    value: 10.5281/zenodo.7760509
     description: Zenodo archive
