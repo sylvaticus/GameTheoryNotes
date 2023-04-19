@@ -18,3 +18,4 @@ _Disclaimer: The following notes are a mesh of my own notes, selected transcript
 **Cite as**
 
 Antonello Lobianco (2023), _Game Theory notes with implementations in the Julia programming language_, [https://doi.org/10.5281/zenodo.7760509](https://doi.org/10.5281/zenodo.7760509)   
+

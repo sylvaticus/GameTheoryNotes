@@ -37,17 +37,20 @@ using LinearAlgebra, StrategicGames
 - when the state of the world depends on stochasticity other than the players combined actions
 
 **Extensive-form games**:
-- include a timing dimension t that precises the _order_ of the actions taken by the various players
-- it becomes relevant the degree of information that the agent knows at the times of making decisions  
+- include a timing dimension _t_ that precises the _order_ of the actions taken by the various players
+- it becomes relevant the degree of information that the agents know at the times of making decisions  
  
 A (_finite, N-person_) **normal-form** game is characterized by the following elements:
 - $N$ is a finite (ordered) set of players indexed by $n$
-- $A_n$ is the (ordered) set of actions available to player $n$. Each player can have different actions available (including in different number). The total possible states of the world correspond to all the possible actions that all the $N$ players can take and it is given by the _N_-dimensional tensor $A$ of size $(length(A_1),length(A_2),...,length(A_n)$. Note that as there isn't any stocasticity here, there is no distintion between a given set of actions and the resulting state of the world.
-- $U$ is the utility levels associated to each corresponding state of the word, aka **pay-off matrix** ("tensor" would be a more appropriate word). This is a $N+1$ dimensional tensor of size $(length(A_1),length(A_2),...,length(A_n),N$. The last dimension has size $N$, as each player has its own utility functions of the various states of the world. Alternatively can be represented as a N dimensional tensor of tuples representing each the utility of the various players for the given state of the world.
+- $A_n$ is the (ordered) set of actions available to player $n$. Each player can have different actions available (including in different number). The total possible states of the world correspond to all the possible actions that all the $N$ players can take and it is given by the _N_-dimensional array $A$ of size $(length(A_1),length(A_2),...,length(A_n)$. Note that as there isn't any stocasticity here, there is no distintion between a given set of actions and the resulting state of the world.
+- $U$ is the utility levels associated to each corresponding state of the word, aka **pay-off matrix** ("array" would be a more appropriate word). This is a $N+1$ dimensional array of size $(length(A_1),length(A_2),...,length(A_n),N$. The last dimension has size $N$, as each player has its own utility functions of the various states of the world. Alternatively, $U$ can be represented as a N dimensional array of tuples representing each the utility of the various players for the given state of the world.
+
+!!! tip
+    The `StrategicGames` package has a convenient function `expand_dimensions(A)` to pass from a _N_ dimensional array of tuples in a _N+1_ dimensional array of scalars
   
 We can further define:
 - $S_n$ the (infinite) set of all the discrete probability functions that agent $n$ may want to use over its set of available actions $A_n$ in order to stocastically determine its action. Each individual probability distribution $s_{ni}$ is called **strategy**. Strategies $s_{ni}$ with a single action with non-zero probabilities are called **pure strategies**, while strategies with more than one available action assigned non-zero probabilities are called **mixed strategies** and strategies with non zero probabilities for all actions are named **fully mixed straegies**. The (sub)set of actions assigned non-zero probabilities is called **support** of the given strategy. We indicate with $s_{n}$ the strategy (PDF) emploied by player $n$ and with $s$ the **strategy profile**, the set of all particular strategies applied by all the individual players.
-- $a_{length(A_1),length(A_2),...,length(A_n)}$ are the individual states of the world (the elements of the $A$ tensor) derived by the combined actions of all the $1,2,...,N$ players. These are also called an _action profile_.
+- $a_{length(A_1),length(A_2),...,length(A_n)}$ are the individual states of the world (the elements of the $A$ array) derived by the combined actions of all the $1,2,...,N$ players. These are also called an _action profile_.
 - $E[U(s_{ni})]$ The _expected_ utility by player $n$ by employing strategy $s_{ni}$. Knowing (or assuming) the strategies emploied by the other players, the expected utility of a given strategy $i$ for player $n$ can be computed as $\sum_{a \in A} U_n(a) \prod_{j=1}^{N} s_j(a)$ that is it, for each state of the world $a$ we compute the probability (using the multiplication rule) that it arises using the strategies of all the players, _including the one specific we are evaluating ($i$ of player $n$)_, and we multiply it by the utility this state provides to player $n$ and we finally sum all this "possible" state to retrieve the expected value. 
 
 ### Interpretation of mixed-strategies equilibrium
@@ -65,9 +68,9 @@ What does a mixed-strategy represents? Why should it be used ?
 ```julia
 N = 3            # 3 players
 A = [3,2,2]      # 3, 2,and 2 actions available for players 1,2,3 respectively
-U = rand(A...,N) # pay-off tensor 
+U = rand(A...,N) # pay-off array
 a = (2,1,2)      # one particular state of the world (action profile)
-U[a...,1], U[a...,2], U[a...,3] # The utilities for the 3 players associated to this particular state of the world
+U[a...,2]        # The utility for player 2 associated to this particular state of the world - note that we select "2" on the last dimension
 
 s1 = [0.5,0.3,0.2] # One particular mixed-strategy emploied by player 1
 s2 = [0,1]         # One particular pure-strategy emploied by player 2
